@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+		<title>RIDE</title>
+		<style>
+			html {
+				font-family: Arial;
+				display: inline-block;
+				margin: 0px auto;
+				text-align: center;
+			}
+      
+			h1 { font-size: 2.0rem; color:#2980b9;}
+      
+			.buttonON {
+				display: inline-block;
+				padding: 15px 25px;
+				font-size: 24px;
+				font-weight: bold;
+				cursor: pointer;
+				text-align: center;
+				text-decoration: none;
+				outline: none;
+				color: #fff;
+				background-color: #4CAF50;
+				border: none;
+				border-radius: 15px;
+				box-shadow: 0 5px #999;
+			}
+		
+			.buttonON:hover {background-color: #3e8e41}
+			.buttonON:active {
+				background-color: #3e8e41;
+				box-shadow: 0 1px #666;
+				transform: translateY(4px);
+			}
+      
+			.buttonOFF {
+				display: inline-block;
+				padding: 15px 25px;
+				font-size: 24px;
+				font-weight: bold;
+				cursor: pointer;
+				text-align: center;
+				text-decoration: none;
+				outline: none;
+				color: #fff;
+				background-color: #e74c3c;
+				border: none;
+				border-radius: 15px;
+				box-shadow: 0 5px #999;
+			}
+		
+			.buttonOFF:hover {background-color: #c0392b}
+			.buttonOFF:active {
+				background-color: #c0392b;
+				box-shadow: 0 1px #666;
+				transform: translateY(4px);
+			}
+			
+			.text {
+				text-align: center;
+				font-size: 18px;
+				width: 200px;
+				height: 22px;
+				border: 3px solid #9b59b6;
+				border-radius: 5px;
+				padding: 3px;
+				-webkit-transition: border 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+				-moz-transition: border 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+				-ms-transition: border 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+				-o-transition: border 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+				transition: border 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+			}
+
+			.text:focus {
+				border: 3px solid #8e44ad;
+				box-shadow: 0 0 7px #8e44ad;
+				outline: none;
+			}
+			#title {
+			font-size: 24px;
+			margin-right: 20px;
+			font-weight: bold;
+			}
+			
+			#timer-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-top: 20px;
+			margin-bottom: 50px;
+		   }
+		
+		   #timer {
+			 font-size: 50px;
+		   }
+		.blink {
+			animation: blinker 1s linear infinite;
+			color: red;
+		}
+		
+		@keyframes blinker {
+			50% {
+				opacity: 0;
+			}
+		}
+		</style>
+	</head>
+	<body>
+		<div>
+			<h1>Welcome to RIDE</h1>
+			<p style="color:#2c3e50;font-weight: bold;font-size: 18px;">----| Revolutionize Your <span style="color:#00BF00;font-weight: bold;font-size: 18px;">RIDE</span> Experience |----</p>
+			<div>
+				<img id="LightImage" width="300" height="270" src="111.png">
+			</div>
+			<div id="timer-container">
+				<div id="title">RIDE time :</div>
+				<div id="timer">00 : 00 : 00</div>
+			</div>
+			<button type="button" id="light-on" class="buttonON" >BIKE ON</button>
+			<button type="button" id="light-off" class="buttonOFF" >BIKE OFF</button><br>
+		</div>
+		<br>
+		
+		<div>
+			<p style="color:#2c3e50;font-weight: bold;font-size: 24px;"><span id="LIGHTState">Please wait...</span></p>		
+			<p style="color:#2c3e50;font-weight: bold;font-size: 24px;"><span id="LIGHTStatee">The action will be completed within 30 seconds...</span></p>
+			<p style="color:black;font-weight: bold;font-size: 20px;">-------------------------- </p>
+		</div>
+    
+		<script>
+			var hours = 0;
+			var minutes = 0;
+			var seconds = 0;
+			var timer;
+			var timerRunning = false;
+			
+			document.getElementById('light-on').addEventListener('click', function() {
+				
+				var url = "https://api.thingspeak.com/update?api_key=QL4G13MTTB3ZDARH&field1=1"
+				var proxyurl = "https://corsproxy.io/?";
+				var urlwithproxy = proxyurl + url;
+				fetch(urlwithproxy, {
+				   method: 'POST'
+				})
+				.then(response => console.log(response))
+				.catch(error => console.error(error));
+				
+				
+			});
+		
+			document.getElementById('light-off').addEventListener('click', function() {
+				
+				var url = "https://api.thingspeak.com/update?api_key=QL4G13MTTB3ZDARH&field1=0"
+				var proxyurl = "https://corsproxy.io/?";
+				var urlwithproxy = proxyurl + url
+				fetch(urlwithproxy, {
+				   method: 'POST'
+				})
+				.then(response => console.log(response))
+				.catch(error => console.error(error));
+
+				
+			});
+			
+			 setInterval(function() {
+			// Call a function repetatively with 15 Second interval
+				getThingSpeakLightState();
+			}, 15000);
+			
+			function getThingSpeakLightState() {
+				
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var myObj = JSON.parse(this.responseText);
+						if (myObj.field1 == 1) {
+							document.getElementById("LIGHTState").innerHTML = "Your <span style='color:#00BF00;font-weight: bold;'>RIDE</span> has started";
+							document.getElementById("LIGHTStatee").innerHTML = " ";
+							document.getElementById("LightImage").src="222.png";
+							if (!timerRunning) {
+							timerRunning = true;
+							timer = setInterval(updateTimer, 1000);
+			  				}
+						}
+						else {
+							document.getElementById("LIGHTState").innerHTML = "Your <span style='color:red;font-weight: bold;'>RIDE</span> has ended</span>";
+							document.getElementById("LIGHTStatee").innerHTML = " ";
+							document.getElementById("LightImage").src="333.png";
+							if (timerRunning) {
+							timerRunning = false;
+							clearInterval(timer);
+							blink();
+							 }
+				      }
+					}
+				};
+				xhttp.open("GET", "https://api.thingspeak.com/channels/1892226/fields/1/last.json", true);
+				xhttp.send();
+			}
+
+			function updateTimer() {
+			seconds++;
+			if (seconds >= 60) {
+				seconds = 0;
+				minutes++;
+				if (minutes >= 60) {
+					minutes = 0;
+					hours++;
+				}
+			}
+			document.getElementById("timer").textContent = formatTime(hours) + " : " + formatTime(minutes) + " : " + formatTime(seconds);
+		}
+		
+		function formatTime(time) {
+			return time < 10 ? "0" + time : time;
+		}
+		
+		function blink() {
+			var count = 0;
+			var blinkTimer = setInterval(function() {
+				count++;
+				document.getElementById("timer").classList.toggle("blink");
+				if (count == 15) {
+					clearInterval(blinkTimer);
+					document.getElementById("timer").classList.remove("blink");
+					document.getElementById("timer").style.color = "#000";
+					hours = 0;
+					minutes = 0;
+					seconds = 0;
+					document.getElementById("timer").textContent= formatTime(hours) + " : " + formatTime(minutes) + " : " + formatTime(seconds);
+				}
+			}, 1000);
+			document.getElementById("timer").style.color = "red";
+		}
+		</script>
+	</body>
+</html>
