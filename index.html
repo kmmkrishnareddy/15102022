@@ -60,6 +60,50 @@
 				box-shadow: 0 1px #666;
 				transform: translateY(4px);
 			}
+			.buttonpau {
+				display: inline-block;
+				padding: 15px 25px;
+				font-size: 24px;
+				font-weight: bold;
+				cursor: pointer;
+				text-align: center;
+				text-decoration: none;
+				outline: none;
+				color: #fff;
+				background-color: #fcae1e;
+				border: none;
+				border-radius: 15px;
+				box-shadow: 0 5px #999;
+			}
+		
+			.buttonpau:hover {background-color: #fc6a03}
+			.buttonpau:active {
+				background-color: #fc6a03;
+				box-shadow: 0 1px #666;
+				transform: translateY(4px);
+			}
+			.buttonres {
+				display: inline-block;
+				padding: 15px 25px;
+				font-size: 24px;
+				font-weight: bold;
+				cursor: pointer;
+				text-align: center;
+				text-decoration: none;
+				outline: none;
+				color: #fff;
+				background-color: #0490c2;
+				border: none;
+				border-radius: 15px;
+				box-shadow: 0 5px #999;
+			}
+		
+			.buttonres:hover {background-color: #2832c2}
+			.buttonres:active {
+				background-color: #2832c2;
+				box-shadow: 0 1px #666;
+				transform: translateY(4px);
+			}
 			
 			.text {
 				text-align: center;
@@ -113,31 +157,41 @@
 	<body>
 		<div>
 			<h1>Welcome to RIDE</h1>
-			<p style="color:#2c3e50;font-weight: bold;font-size: 18px;">----| Revolutionize Your <span style="color:#00BF00;font-weight: bold;font-size: 18px;">RIDE</span> Experience |----</p>
-			<div>
-				<img id="LightImage" width="300" height="270" src="111.png">
-			</div>
+			<p style="color:#2c3e50;font-weight: bold;font-size: 18px;">--| Revolutionize Your <span style="color:#00BF00;font-weight: bold;font-size: 18px;">RIDE</span> Experience |--</p>
+			<img id="LightImage" width="300" height="230" src="1111.png">
 			<div id="timer-container">
 				<div id="title">RIDE time :</div>
 				<div id="timer">00:00:00</div>
 			</div>
 			<button type="button" id="light-on" class="buttonON" >START RIDE</button>
-			<button type="button" id="light-off" class="buttonOFF" >END RIDE</button><br>
+			<button type="button" id="pause-btn" onclick="pauseTimer()" class="buttonpau" style="display: none;" >PAUSE RIDE</button>
+			<button type="button" id="resume-btn" onclick="resumeTimer()" class="buttonres" style="display: none;" >RESUME RIDE</button>
+			<button type="button" id="light-off" class="buttonOFF" style="display: none;" >END RIDE</button>
+			
+		<br>
 		</div>
 		<br>
 		
 		<div>
 			<p style="color:#2c3e50;font-weight: bold;font-size: 24px;"><span id="LIGHTState">Please wait...</span></p>		
-			<p style="color:#2c3e50;font-weight: bold;font-size: 24px;"><span id="LIGHTStatee">The action will be completed within 30 seconds...</span></p>
-			<p style="color:black;font-weight: bold;font-size: 20px;">-------------------------- </p>
+			<p style="color:#2c3e50;font-weight: bold;font-size: 24px;"><span id="LIGHTStatee">The action will be completed within 30 seconds</span></p>
+			<p style="color:black;font-weight: bold;font-size: 20px;">--------------------- </p>
 		</div>
     
 		<script>
 			var hours = 0;
 			var minutes = 0;
 			var seconds = 0;
+			var loopstart = 0;
+			var value = 0;
 			var timer;
 			var timerRunning = false;
+			
+			function doInitial(){
+				getThingSpeakLightState();		
+				 window.removeEventListener("DOMContentLoaded", doInitial);}
+
+			window.addEventListener("DOMContentLoaded", doInitial);
 			
 			document.getElementById('light-on').addEventListener('click', function() {
 				
@@ -149,6 +203,9 @@
 				})
 				.then(response => console.log(response))
 				.catch(error => console.error(error));
+				document.getElementById("LIGHTState").innerHTML = "Wait a moment !";
+			  	document.getElementById("LIGHTStatee").innerHTML = " ";
+				
 				
 				
 			});
@@ -163,11 +220,33 @@
 				})
 				.then(response => console.log(response))
 				.catch(error => console.error(error));
-
+				document.getElementById("LIGHTState").innerHTML = "Wait a moment !";
+			  	document.getElementById("LIGHTStatee").innerHTML = " ";
 				
 			});
 			
-			 setInterval(function() {
+			function pauseTimer() {
+        		  clearInterval(timer);
+				  value = 1;
+        		  document.getElementById("pause-btn").style.display = "none";
+        		  document.getElementById("resume-btn").style.display = "inline-block";
+        		  document.getElementById("light-off").style.display = "inline-block";
+			  	  document.getElementById("LIGHTState").innerHTML = "Click RESUME RIDE to restart the <span style='color:blue;font-weight: bold;'>RIDE</span>";
+			  	  document.getElementById("LIGHTStatee").innerHTML = " ";
+			  	  
+      		}
+			function resumeTimer() {
+				  document.getElementById("LIGHTState").innerHTML = "Your <span style='color:#00BF00;font-weight: bold;'>RIDE</span> has started";
+			  	  document.getElementById("LIGHTStatee").innerHTML = " ";
+        		  timer = setInterval(updateTimer, 1000);
+				  value = 0;
+        		  document.getElementById("resume-btn").style.display = "none";
+        		  document.getElementById("pause-btn").style.display = "inline-block";
+        		  document.getElementById("end-btn").style.display = "inline-block";
+			  	  
+      		}
+			
+			setInterval(function() {
 			// Call a function repetatively with 15 Second interval
 				getThingSpeakLightState();
 			}, 15000);
@@ -179,23 +258,34 @@
 					if (this.readyState == 4 && this.status == 200) {
 						var myObj = JSON.parse(this.responseText);
 						if (myObj.field1 == 1) {
+							if (value == 0){
 							document.getElementById("LIGHTState").innerHTML = "Your <span style='color:#00BF00;font-weight: bold;'>RIDE</span> has started";
-							document.getElementById("LIGHTStatee").innerHTML = " ";
-							document.getElementById("LightImage").src="222.png";
+							document.getElementById("LIGHTStatee").innerHTML = " ";}
+							document.getElementById("LightImage").src="2222.png";
+							loopstart++;
+							if(loopstart == 1){
+							document.getElementById("light-on").style.display = "none";
+        						document.getElementById("pause-btn").style.display = "inline-block";
+        						document.getElementById("light-off").style.display = "inline-block";}
 							if (!timerRunning) {
 							timerRunning = true;
 							timer = setInterval(updateTimer, 1000);
 			  				}
 						}
 						else {
-							document.getElementById("LIGHTState").innerHTML = "Your <span style='color:red;font-weight: bold;'>RIDE</span> has ended</span>";
+							document.getElementById("LIGHTState").innerHTML = "Click START RIDE to begin the <span style='color:#00BF00;font-weight: bold;'>RIDE</span>";
 							document.getElementById("LIGHTStatee").innerHTML = " ";
-							document.getElementById("LightImage").src="333.png";
+							document.getElementById("LightImage").src="3333.png";
 							if (timerRunning) {
 							timerRunning = false;
 							clearInterval(timer);
 							blink();
 							 }
+							document.getElementById("pause-btn").style.display = "none";
+        						document.getElementById("resume-btn").style.display = "none";
+        						document.getElementById("light-off").style.display = "none";
+        						document.getElementById("light-on").style.display = "inline-block";
+							loopstart = 0;
 				      }
 					}
 				};
@@ -213,7 +303,7 @@
 					hours++;
 				}
 			}
-			document.getElementById("timer").textContent = formatTime(hours) + " : " + formatTime(minutes) + " : " + formatTime(seconds);
+			document.getElementById("timer").textContent = formatTime(hours) + ":" + formatTime(minutes) + ":" + formatTime(seconds);
 		}
 		
 		function formatTime(time) {
@@ -232,10 +322,12 @@
 					hours = 0;
 					minutes = 0;
 					seconds = 0;
-					document.getElementById("timer").textContent= formatTime(hours) + " : " + formatTime(minutes) + " : " + formatTime(seconds);
+					document.getElementById("timer").textContent= formatTime(hours) + ":" + formatTime(minutes) + ":" + formatTime(seconds);
 				}
 			}, 1000);
 			document.getElementById("timer").style.color = "red";
+			document.getElementById("LIGHTState").innerHTML = "Your <span style='color:red;font-weight: bold;'>RIDE</span> has ended";
+			document.getElementById("LIGHTStatee").innerHTML = " ";
 		}
 		</script>
 	</body>
