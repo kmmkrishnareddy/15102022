@@ -13,7 +13,9 @@
 				text-align: center;
 			}
       
-			h1 { font-size: 2.0rem; color:#2980b9;}
+			h1 { font-size: 2.0rem; color:#2980b9;text-align: center;
+			flex: 1;}
+
       
 			.buttonON {
 				display: inline-block;
@@ -30,7 +32,39 @@
 				border-radius: 15px;
 				box-shadow: 0 5px #999;
 			}
-		
+			
+			.button-text-container {
+			  display: flex;
+			  align-items: center;
+			  padding-right: 5px;
+		      }
+
+			.buttonmap {
+			border-radius: 50%;
+			width: 50px;
+			height: 50px;
+			padding: 0;
+			border: none;
+			background-color: #ffffff;
+			box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+			transition: all 0.3s ease;
+			cursor: pointer;
+			margin-left: auto;
+		      }
+
+		     .buttonmap:hover {
+		  	  transform: translateY(-5px);
+			  box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.3);
+		      }
+
+		     .pointer {
+			  border-radius: 50%;
+			  display: block;
+			  width: 100%;
+			  height: 100%;
+			  object-fit: cover;
+		      }
+			
 			.buttonON:hover {background-color: #3e8e41}
 			.buttonON:active {
 				background-color: #3e8e41;
@@ -156,7 +190,13 @@
 	</head>
 	<body>
 		<div>
-			<h1>Welcome to RIDE</h1>
+			<div class="button-text-container">
+			  <h1>Welcome to RIDE</h1>
+			  <a href="https://www.google.com/maps/" target="_blank">
+			     <button type="button" class="buttonmap"><img class="pointer" src="map.png" alt="Go to Maps"></button>
+		        </a>
+			
+			</div>
 			<p style="color:#2c3e50;font-weight: bold;font-size: 18px;">--| Revolutionize Your <span style="color:#00BF00;font-weight: bold;font-size: 18px;">RIDE</span> Experience |--</p>
 			<img id="LightImage" width="300" height="230" src="1111.png">
 			<div id="timer-container">
