@@ -12,7 +12,7 @@
 				margin: 0px auto;
 				text-align: center;
 			}
-			
+      		
 			body {
 			background-color: black;
 			color: white;
@@ -23,7 +23,13 @@
 			color: white;
 			margin-top: 20px;
 		}
-		#code {
+		#tit {
+			text-align: center;
+			font-weight: bold;
+			color: white;
+			margin-top: 20px;
+		}
+		#cod {
 			text-align: center;
 			font-weight: bold;
 			color: gold;
@@ -41,14 +47,14 @@
 			align-items: center;
 			justify-content: center;
 		}
-		#password-container {
+		#login-container {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			margin-top: 10px;
+			margin-top: 50px;
 		}
-		input[type=password] {
+		input[type=text], input[type=password] {
 			padding: 10px;
 			font-size: 16px;
 			color: #666;
@@ -73,7 +79,6 @@
 			align-items: center;
 			justify-content: center;
 		}
-      
 			h1 { font-size: 2.0rem; color:#2980b9;text-align: center;
 			flex: 1;}
 
@@ -220,11 +225,17 @@
 				box-shadow: 0 0 7px #8e44ad;
 				outline: none;
 			}
+			#title {
+			font-size: 24px;
+			margin-right: 20px;
+			font-weight: bold;
+			}
 			#titllle {
 			font-size: 24px;
 			margin-right: 20px;
 			font-weight: bold;
 			}
+			
 			
 			#timer-container {
 			display: flex;
@@ -248,51 +259,60 @@
 			}
 		}
 		</style>
-	<script>
-		function showTeamRIDE() {
-			var password = "RIDE"; // Replace with your desired password
-			var enteredPassword = document.getElementById("password").value;
-
-			if (enteredPassword == password) {
-				document.getElementById("welcome-container").style.display = "none";
-				document.getElementById("team-ride").style.display = "block";
-			} else {
-				alert("Incorrect password. Please try again.");
-			}
-		}
-	</script>
 	</head>
 	<body>
 		<!-- Password form with "Welcome to RIDE" and "2023 CODEASTHRA" messages -->
-	<div id="welcome-container">
-		<h1 id="title" >Welcome to RIDE</h1>
-		<h2 id="code">...2023 CODEASTHRA...</h2>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<h4 id="access">To access, please enter the password</h4>
-		<form onsubmit="showTeamRIDE(); return false;">
-			<div id="password-container">
-				<label for="password" style="display: none;">Enter password</label>
-				<input type="password" id="password" name="password" placeholder="Enter password">
-				<input type="submit" value="Submit">
-			</div>
-		</form>
-	</div>
-
-	<!-- Main -->
+    <div id="welcome-container">
+        <h1 id="tit">Welcome to RIDE</h1>
+        <h2 id="cod">...2023 CODEASTHRA...</h2>
+        
+  <div id="login-container">
+	<br>
+        <br>
+    <h1 id="title">Login</h1>
+    <form onsubmit="return validateLogin();">
+      <div id="username-container">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+      </div>
+      <div id="password-container">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+      </div>
+      <div id="submit-container">
+        <input type="submit" value="Login">
+      </div>
+    </form>
+  </div>
+  <div id="e-passcode-container" style="display: none;">
+	<br>
+        <br>
+        <br>
+        <br>
+        <br>
+    <h1 id="title">E-Passcode</h1>
+    
+    <h4 id="access">To access, please enter the E-Passcode of <span style='color:white;font-weight: bold;'>151022</span></h4>
+    <form onsubmit="return validateEPasscode();">
+      <div id="password-container">
+        <label for="e-passcode" style="display: none;">Enter E-Passcode</label>
+        <input type="password" id="e-passcode" name="e-passcode" placeholder="Enter E-Passcode">
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+  </div>
+</div>
+  <!-- Main -->
 		<div id="team-ride" style="display: none;">
 		<div>
 			<div class="button-text-container">
-			  <h1>Welcome to RIDE</h1>
+			<h1 style="color:#2c3e50;font-weight: bold;font-size: 18px;">Revolutionize Your <span style="color:#00BF00;font-weight: bold;font-size: 18px;">RIDE</span> Experience</h1>
 			  <a href="https://www.google.com/maps/" target="_blank">
 			     <button type="button" class="buttonmap"><img class="pointer" src="map.png" alt="Go to Maps"></button>
 		        </a>
 			
 			</div>
-			<p style="color:#2c3e50;font-weight: bold;font-size: 18px;">--| Revolutionize Your <span style="color:#00BF00;font-weight: bold;font-size: 18px;">RIDE</span> Experience |--</p>
+
 			<img id="LightImage" width="300" height="230" src="1111.png">
 			<div id="timer-container">
 				<div id="titllle">RIDE time :</div>
@@ -314,6 +334,56 @@
 		</div>
     		</div>
 		<script>
+			function showTeamRIDE() {
+			var password = "0106"; // Replace with your desired password
+			var enteredPassword = document.getElementById("password").value;
+
+			if (enteredPassword == password) {
+				document.getElementById("login-container").style.display = "none";
+				document.getElementById("team-ride").style.display = "block";
+			} else {
+				alert("Incorrect E-Passcode. Please try again.");
+			}
+		}
+
+		function showLoginPage() {
+			var username = "admin"; // Replace with your desired username
+			var password = "password"; // Replace with your desired password
+			var enteredUsername = document.getElementById("username").value;
+			var enteredPassword = document.getElementById("password-login").value;
+
+			if (enteredUsername == username && enteredPassword == password) {
+				document.getElementById("login-container").style.display = "none";
+				document.getElementById("access").innerHTML = "To access, please enter the E-Passcode of <span style='color:white;font-weight: bold;'>0106</span>";
+				document.getElementById("password-container").style.display = "block";
+			} else {
+				alert("Incorrect login details. Please try again.");
+			}
+		}
+		function validateLogin() {
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+      if (username === "admin" && password === "password") {
+        document.getElementById("login-container").style.display = "none";
+        document.getElementById("e-passcode-container").style.display = "block";
+        return false;
+      } else {
+        alert("Incorrect username or password. Please try again.");
+        return false;
+      }
+    }
+
+    function validateEPasscode() {
+      var ePasscode = document.getElementById("e-passcode").value;
+      if (ePasscode === "0106") {
+        document.getElementById("e-passcode-container").style.display = "none";
+        document.getElementById("team-ride").style.display = "block";
+        return false;
+      } else {
+        alert("Incorrect E-Passcode. Please try again.");
+        return false;
+      }
+    }
 			var hours = 0;
 			var minutes = 0;
 			var seconds = 0;
