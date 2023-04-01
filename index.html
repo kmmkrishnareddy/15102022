@@ -12,6 +12,67 @@
 				margin: 0px auto;
 				text-align: center;
 			}
+			
+			body {
+			background-color: black;
+			color: white;
+		}
+		#title {
+			text-align: center;
+			font-weight: bold;
+			color: white;
+			margin-top: 20px;
+		}
+		#code {
+			text-align: center;
+			font-weight: bold;
+			color: gold;
+			margin-top: 10px;
+		}
+		#access {
+			text-align: center;
+			font-weight: bold;
+			color: gray;
+			margin-top: 10px;
+		}
+		#welcome-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+		#password-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			margin-top: 10px;
+		}
+		input[type=password] {
+			padding: 10px;
+			font-size: 16px;
+			color: #666;
+			border: none;
+			background-color: #f1f1f1;
+			margin-bottom: 10px;
+		}
+		input[type=submit] {
+			padding: 10px;
+			font-size: 16px;
+			color: white;
+			background-color: #333;
+			border: none;
+			cursor: pointer;
+		}
+		#team-ride {
+			display: none;
+			background-color: white;
+			color: black;
+			height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
       
 			h1 { font-size: 2.0rem; color:#2980b9;text-align: center;
 			flex: 1;}
@@ -159,7 +220,7 @@
 				box-shadow: 0 0 7px #8e44ad;
 				outline: none;
 			}
-			#title {
+			#titllle {
 			font-size: 24px;
 			margin-right: 20px;
 			font-weight: bold;
@@ -187,8 +248,42 @@
 			}
 		}
 		</style>
+	<script>
+		function showTeamRIDE() {
+			var password = "RIDE"; // Replace with your desired password
+			var enteredPassword = document.getElementById("password").value;
+
+			if (enteredPassword == password) {
+				document.getElementById("welcome-container").style.display = "none";
+				document.getElementById("team-ride").style.display = "block";
+			} else {
+				alert("Incorrect password. Please try again.");
+			}
+		}
+	</script>
 	</head>
 	<body>
+		<!-- Password form with "Welcome to RIDE" and "2023 CODEASTHRA" messages -->
+	<div id="welcome-container">
+		<h1 id="title" >Welcome to RIDE</h1>
+		<h2 id="code">...2023 CODEASTHRA...</h2>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<h4 id="access">To access, please enter the password</h4>
+		<form onsubmit="showTeamRIDE(); return false;">
+			<div id="password-container">
+				<label for="password" style="display: none;">Enter password</label>
+				<input type="password" id="password" name="password" placeholder="Enter password">
+				<input type="submit" value="Submit">
+			</div>
+		</form>
+	</div>
+
+	<!-- Main -->
+		<div id="team-ride" style="display: none;">
 		<div>
 			<div class="button-text-container">
 			  <h1>Welcome to RIDE</h1>
@@ -200,7 +295,7 @@
 			<p style="color:#2c3e50;font-weight: bold;font-size: 18px;">--| Revolutionize Your <span style="color:#00BF00;font-weight: bold;font-size: 18px;">RIDE</span> Experience |--</p>
 			<img id="LightImage" width="300" height="230" src="1111.png">
 			<div id="timer-container">
-				<div id="title">RIDE time :</div>
+				<div id="titllle">RIDE time :</div>
 				<div id="timer">00:00:00</div>
 			</div>
 			<button type="button" id="light-on" class="buttonON" >START RIDE</button>
@@ -217,7 +312,7 @@
 			<p style="color:#2c3e50;font-weight: bold;font-size: 24px;"><span id="LIGHTStatee">The action will be completed within 30 seconds</span></p>
 			<p style="color:black;font-weight: bold;font-size: 20px;">--------------------- </p>
 		</div>
-    
+    		</div>
 		<script>
 			var hours = 0;
 			var minutes = 0;
